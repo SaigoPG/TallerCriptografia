@@ -1,0 +1,252 @@
+#Este archivo es vestigial. Se puede correr la aplicacion desde aqui, y solamente funcionaran algunas opciones.
+#Es la version que tendria interfaz de usuario completa, pero fue abandonada por cuestiones de tiempo
+
+import easygui as eg
+from Modes import caesar as cs
+from Modes import chain as bc
+from Modes import digsign as ds
+from Modes import fernet as fn
+from Modes import hashing as hs
+from Modes import vignere as vg
+from Modes import https as sw
+
+##Gui
+#MainMenu
+main_msg = "Selecciona la accion que deseas realizar:"
+main_title = "Ejercicios de Criptografia"
+main_choices = ["Criptografia Clasica", "Hashes y HMAC", "Autenticacion con Hash y Sal", "Firma Digital", "Blockchain", "Ejercicio HTTPS", "Salir"]
+#main_choice = eg.choicebox(main_msg, main_title, main_choices)
+
+#ClassicCryptography
+classic_msg = "Selecciona el metodo criptografico:"
+classic_title = "Criptografia Clasica"
+classic_choices = ["Cifrado Cesar", "Cifrado Vignere", "Cifrado Fernet", "Volver"]
+#classic_choice = eg.choicebox(classic_msg, classic_title, classic_choices)
+
+#Hashes
+hash_msg = "Selecciona una opcion:"
+hash_title = "Hashes y HMAC"
+hash_choices = ["Ver SHA-256", "Comparar SHA-256", "Generación de HMAC", "Volver"]
+#hash_choice = eg.choicebox(hash_msg, hash_title, hash_choices)
+
+#Auth
+auth_title = "Autenticacion con Hash y Sal"
+auth_choices = ["Simulacion de Hash con Sal", "Volver"]
+#auth_choice = eg.choicebox(hash_msg, auth_title, auth_choices)
+
+#DigitalSignature
+sign_title = "Firma Digital"
+sign_choices = ["Demostracion Firma Digital", "Volver"]
+#sign_choice = eg.choicebox(hash_msg, sign_title, sign_choices)
+
+#Blockchain
+block_title = "Blockchain"
+block_choices = ["Demostracion Blockchain", "Volver"]
+#block_choice = eg.choicebox(hash_msg, block_title, block_choices)
+
+#HTTPS
+https_title = "Ejercicio HTTPS"
+https_choices = ["Ejercicio HTTPS", "Volver"]
+#https_choice = eg.choicebox(hash_msg, https_title, https_choices)
+
+def MainMenu():
+
+    while True:
+
+        main_choice = eg.choicebox(main_msg, main_title, main_choices)
+
+        match main_choice:
+
+            case "Criptografia Clasica":
+                CryptMenu()
+            case "Hashes y HMAC":
+                print(main_choice)
+            case "Autenticacion con Hash y Sal":
+                print(main_choice)
+            case "Firma Digital":
+                print(main_choice)
+            case "Blockchain":
+                print(main_choice)
+            case "Ejercicio HTTPS":
+                print(main_choice)
+            case "Salir":
+                print(main_choice)
+                break
+
+def CryptMenu():
+
+    classic_choice = eg.choicebox(classic_msg, classic_title, classic_choices)
+
+    match classic_choice:
+
+        case "Cifrado Cesar":
+            CesarWin()
+        case "Cifrado Vignere":
+            print(classic_choice)
+        case "Cifrado Fernet":
+            print(classic_choice)
+        case "Volver":
+            return       
+        
+def HashMenu():
+
+    hash_choice = eg.choicebox(hash_msg, hash_title, hash_choices)
+
+    match hash_choice:
+
+        case "Ver SHA-256":
+            print(hash_choice)
+        case "Comparar SHA-256":
+            print(hash_choice)
+        case "Generacion de HMAC":
+            print(hash_choice)
+        case "Volver":
+            print(hash_choice)
+            return
+
+def AuthMenu(): 
+    
+    auth_choice = eg.choicebox(hash_msg)
+
+    match auth_choice:
+
+        case "Simulacion con Hash y Sal":
+            print(auth_choice)
+        case "Volver":
+            print(auth_choice)
+            return
+        
+def DigSignMenu():
+
+    sign_choice = eg.choicebox(hash_msg, sign_title, sign_choices)
+
+    match sign_choice:
+
+        case "Demostracion Firma Digital":
+            print(sign_choice)
+        case "Volver":
+            print(sign_choice)
+            return
+        
+def BlockMenu():
+
+    block_choice = eg.choicebox(hash_msg, block_title, block_choices)
+
+    match block_choice:
+
+        case "Demostracion Blockchain":
+            print(block_choice)
+        case "Volver":
+            print(block_choice)
+            return
+
+def HTTPSMenu():
+
+    https_choice = eg.choicebox(hash_msg, https_title, https_choices)
+
+    match https_choice:
+
+        case "Ejercicio HTTPS":
+            print(https_choice)
+
+        case "Volver":
+            print(https_choice)
+            return    
+
+def CesarWin():
+    
+    cesar_msg = "Selecciona una opcion:"
+    cesar_title = "Cifrado Cesar"
+    cesar_choices = ["Encriptar", "Desencriptar", "Desencriptar (Fuerza Bruta)", "Volver"]
+
+    cesar_choice = eg.choicebox(cesar_msg, cesar_title, cesar_choices)
+
+    match cesar_choice:
+
+        case "Encriptar":
+            cesarTypeChoices = ["Ingresando texto", "Desde Archivo de texto (.txt)", "Volver"]
+            cesarTypeChoice = eg.choicebox(cesar_msg, cesar_title, cesarTypeChoices)
+
+            match cesarTypeChoice:
+                case "Ingresando texto":
+                    CesarEncryptFromWindowInput()
+                case "Desde Archivo de texto (.txt)":
+                    CesarEncryptFromFile()
+                case "Volver":
+                    return
+
+
+
+def CesarEncryptFromWindowInput():
+    input = []
+    input = eg.multenterbox("Ingrese el texto a encriptar y el desplazamiento", "Encriptado con Cifra Cesar", ["Texto a encriptar", "Desplazamiento"])
+    testField = ""
+    while True:
+
+        if input == None: break
+
+        testField = CheckFields(input, [0,1])
+        if testField == "": break
+        input = eg.multenterbox("Llena los campos requeridos o comprueba que estas ingresando un numero en el campo del desplazamiento", "Encriptado con Cifra Cesar", ["Texto a encriptar", "Desplazamiento"], input)
+    
+    encrypted = cs.encrypt(input[0], int(input[1]))
+
+    path = eg.filesavebox("Guardando el resultado de la encriptacion", "Encriptado con cifra Cesar", "", "*.txt")
+    with open (path, 'w') as out:
+        out.write(encrypted)
+
+def CesarEncryptFromFile():
+    input = ["", ""]
+    path = ""
+    path = eg.fileopenbox("Seleccione el archivo a encriptar", "Encriptado con cifra Cesar", "*.txt","*.txt")
+    with open (path) as file:
+        input_text = file.read()
+        input_shift = eg.enterbox("Desplazamiento", "Encriptado con Cifra Cesar")
+        input[0] = input_text
+        input[1] = input_shift
+        testField = ""
+        
+        while True:
+
+            if input == None: break
+
+            testField = CheckFields(input, [0, 1])
+            if testField == "": break
+            input_shift = eg.enterbox("Ingrese un entero valido para el desplazamiento", "Encriptado con cifra Cesar")
+            input[1] = input_shift
+
+    encrypted = cs.encrypt(input[0], int(input[1]))
+
+    path = eg.filesavebox("Guardando el resultado de la encriptacion", "Encriptado con cifra Cesar", "", "*.txt")
+    with open (path, 'w') as out:
+        out.write(encrypted)
+
+
+def CheckFields(input, type): #0 = string, 1 = num 
+    errmsg = ""
+    for counter in range (len(input)):
+        if input[counter].strip() == "":
+            errmsg += "Por favor, ingresa los datos indicados"
+        try:
+            if type[counter] == 1:
+                int(input[counter])
+        except ValueError:
+            errmsg += "ValueError"
+    
+    return errmsg
+
+MainMenu()
+
+# msg = "The uhh the uhmmm uh the uhhh"
+# crypt = cs.encrypt(msg, 6)
+# print(crypt)
+# decrypt = cs.decrypt(crypt, 6)
+# print(decrypt)
+
+# brute = cs.bruteforce(crypt)
+# count = 1
+# for line in brute:
+#     print(f"{count}: {line}")
+#     count+=1
+
+# eg.msgbox("Test")
